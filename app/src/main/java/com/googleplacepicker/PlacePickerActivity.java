@@ -103,7 +103,6 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
         }
     }
 
-
     public void SetActivityIcon(Bitmap bitmap, String filePath) {
         try {
             if (bitmap != null) {

@@ -1,4 +1,4 @@
-package Utils;
+package com.googleplacepicker.Utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.googleplacepicker.R;

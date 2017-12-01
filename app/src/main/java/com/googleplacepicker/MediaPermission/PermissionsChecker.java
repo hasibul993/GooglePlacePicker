@@ -1,4 +1,4 @@
-package MediaPermission;
+package com.googleplacepicker.MediaPermission;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

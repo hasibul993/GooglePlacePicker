@@ -1,4 +1,4 @@
-package MediaPermission;
+package com.googleplacepicker.MediaPermission;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -28,7 +28,6 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.DatePicker;
@@ -57,8 +56,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import Utils.GraphicsUtil;
-import Utils.Utility;
+import com.googleplacepicker.Utils.GraphicsUtil;
+import com.googleplacepicker.Utils.Utility;
 
 /**
  * Created by BookMEds on 20-09-2017.

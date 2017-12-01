@@ -1,4 +1,4 @@
-package Utils;
+package com.googleplacepicker.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

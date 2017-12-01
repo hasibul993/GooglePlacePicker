@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 
-import MediaPermission.PermissionsChecker;
-import MediaPermission.PickMediaActivity;
-import Utils.Utility;
+import com.googleplacepicker.MediaPermission.PermissionsChecker;
+import com.googleplacepicker.MediaPermission.PickMediaActivity;
+import com.googleplacepicker.Utils.Utility;
 
 public class PlacePickerActivity extends AppCompatActivity implements AppConstants {
 

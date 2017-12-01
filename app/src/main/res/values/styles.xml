@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/AppThemeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/AppThemeColorPrimaryDark</item>
+        <item name="colorAccent">@color/AppThemeColorAccent</item>
+    </style>
+
+
+
+    <!--AlertDialog-->
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <!--android:textColor will affect your title text color of dialog.-->
+        <item name="android:textColor">@color/AppThemeColorPrimary</item>
+        <!--android:textColorPrimary will affect your message color of dialog.-->
+        <item name="android:textColorPrimary">@color/black</item>
+        <!--android:colorAccent will affect your text colors of negative or positive buttons.-->
+        <item name="colorAccent">@color/AppThemeColorAccent</item>
+    </style>
+
+</resources>

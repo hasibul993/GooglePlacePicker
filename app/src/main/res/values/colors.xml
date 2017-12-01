@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>-->
+
+    <color name="AppThemeColorPrimaryDark">#003d87</color>
+    <color name="AppThemeColorPrimary">#0067b7</color>
+    <color name="AppThemeColorAccent">#33a7ff</color>
+
+    <color name="DarkOliveGreen">#556B2F</color>
+    <color name="Indigo">#4B0082</color>
+    <color name="MediumTurquoise">#48D1CC</color>
+    <color name="DarkSlateBlue">#483D8B</color>
+    <color name="SteelBlue">#4682B4</color>
+    <color name="RoyalBlue">#4169E1</color>
+    <color name="Turquoise">#40E0D0</color>
+    <color name="MediumSeaGreen">#3CB371</color>
+    <color name="LimeGreen">#32CD32</color>
+    <color name="DarkSlateGray">#2F4F4F</color>
+    <color name="SeaGreen">#2E8B57</color>
+    <color name="ForestGreen">#228B22</color>
+    <color name="LightSeaGreen">#20B2AA</color>
+    <color name="DodgerBlue">#1E90FF</color>
+    <color name="MidnightBlue">#191970</color>
+    <color name="Aqua">#00FFFF</color>
+    <color name="Cyan">#00FFFF</color>
+    <color name="SpringGreen">#00FF7F</color>
+    <color name="Lime">#00FF00</color>
+    <color name="MediumSpringGreen">#00FA9A</color>
+    <color name="DarkTurquoise">#00CED1</color>
+    <color name="DeepSkyBlue">#00BFFF</color>
+    <color name="DarkCyan">#008B8B</color>
+    <color name="Teal">#008080</color>
+    <color name="Green">#008000</color>
+    <color name="DarkGreen">#006400</color>
+    <color name="MediumBlue">#0000CD</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="main_color_grey_50">#f9fafa</color>
+    <color name="main_color_grey_200">#eeeeee</color>
+    <color name="main_color_grey_300">#e0e0e0</color>
+    <color name="main_color_grey_400">#bdbcbc</color>
+    <color name="main_color_grey_500">#9d9d9d</color>
+    <color name="main_color_grey_600">#757575</color>
+    <color name="main_color_grey_700">#616161</color>
+    <color name="main_color_grey_800">#ff424242</color>
+    <color name="main_color_grey_850">#ff303030</color>
+    <color name="main_color_grey_900">#ff212121</color>
+    <color name="main_color_grey_100">#f4f5f5</color>
+
+</resources>

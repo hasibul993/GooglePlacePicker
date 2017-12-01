@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/profile_icon_grey" />
+
+    <TextView
+        android:id="@+id/Location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Pick Location"
+        android:textColor="@color/main_color_grey_800"
+        android:textSize="@dimen/header" />
+
+    <TextView
+        android:id="@+id/showLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Location"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Show location in map"
+        android:textColor="@color/main_color_grey_800"
+        android:textSize="@dimen/header" />
+
+</RelativeLayout>

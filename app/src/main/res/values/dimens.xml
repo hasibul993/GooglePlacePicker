@@ -1,0 +1,14 @@
+<resources>
+
+    <dimen name="header">16sp</dimen>
+    <dimen name="title">15sp</dimen>
+    <dimen name="body">14sp</dimen>
+    <dimen name="text">12sp</dimen>
+    <dimen name="textsmall">10sp</dimen>
+    <dimen name="dotted">5sp</dimen>
+
+
+    <dimen name="margin_left">16dp</dimen>
+    <dimen name="margin_right">16dp</dimen>
+
+</resources>

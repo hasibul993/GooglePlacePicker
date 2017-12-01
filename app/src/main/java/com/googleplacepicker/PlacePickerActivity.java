@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.googleplacepicker.MediaPermission.PermissionsChecker;
 import com.googleplacepicker.MediaPermission.PickMediaActivity;
 import com.googleplacepicker.Utils.Utility;
@@ -21,25 +23,99 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
 
     Utility utility = new Utility();
 
-    TextView locationTV, showLocationTV;
+    TextView locationStartTV, locationEndTV, calcuteDistanceTV, calcuteDistanceValueTV, showLocationTV;
     ImageView profileIcon;
+    boolean isStartLocation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_picker_activity);
 
-        locationTV = (TextView) findViewById(R.id.Location);
+        locationStartTV = (TextView) findViewById(R.id.locationStartTV);
+        locationEndTV = (TextView) findViewById(R.id.LocationEnd);
+        calcuteDistanceTV = (TextView) findViewById(R.id.calcuteDistance);
         showLocationTV = (TextView) findViewById(R.id.showLocation);
+        calcuteDistanceValueTV = (TextView) findViewById(R.id.calcuteDistanceValue);
         profileIcon = (ImageView) findViewById(R.id.icon);
 
-        locationTV.setOnClickListener(new View.OnClickListener() {
+        locationStartTV.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 try {
+                    isStartLocation = true;
                     PickMediaActivity pickMediaActivity = new PickMediaActivity();
                     pickMediaActivity.ShowLocationMap(PlacePickerActivity.this);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
+
+
+        locationEndTV.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                try {
+                    isStartLocation = false;
+                    PickMediaActivity pickMediaActivity = new PickMediaActivity();
+                    pickMediaActivity.ShowLocationMap(PlacePickerActivity.this);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
+
+
+        calcuteDistanceTV.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                String startLocation, endLocation, latlangStart, latlangEnd;
+                LatLng latLngStart, latLngEnd;
+                try {
+                    startLocation = locationStartTV.getText().toString();
+                    endLocation = locationEndTV.getText().toString();
+
+                    if (StringUtils.isBlank(startLocation)) {
+                        utility.ShowToast(PlacePickerActivity.this, "Pick start place");
+                        return;
+                    } else if (StringUtils.isBlank(endLocation)) {
+                        utility.ShowToast(PlacePickerActivity.this, "Pick end place");
+                        return;
+                    }
+
+                    //Calcute Start LatLong
+                    latlangStart = startLocation.split("#")[1];
+                    latlangStart = latlangStart.split(":")[1].replace(".map", "");
+                    latlangStart = latlangStart.replace("(", "");
+                    latlangStart = latlangStart.replace(")", "");
+
+                    String[] latLngStartArray = latlangStart.split(",");
+                    double latitudeS = Double.parseDouble(latLngStartArray[0]);
+                    double longitudeS = Double.parseDouble(latLngStartArray[1]);
+                    latLngStart = new LatLng(latitudeS, longitudeS);
+
+                    //Calcute End LatLong
+                    latlangEnd = endLocation.split("#")[1];
+                    latlangEnd = latlangEnd.split(":")[1].replace(".map", "");
+                    latlangEnd = latlangEnd.replace("(", "");
+                    latlangEnd = latlangEnd.replace(")", "");
+
+                    String[] latLngEndArray = latlangEnd.split(",");
+                    double latitudeE = Double.parseDouble(latLngEndArray[0]);
+                    double longitudeE = Double.parseDouble(latLngEndArray[1]);
+                    latLngEnd = new LatLng(latitudeE, longitudeE);
+
+
+                    double value = utility.CalculationByDistance(PlacePickerActivity.this, latLngStart, latLngEnd);
+
+                    calcuteDistanceValueTV.setText(value + "");
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -52,7 +128,7 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
             @Override
             public void onClick(View v) {
                 try {
-                    String getLocation = locationTV.getText().toString();
+                    String getLocation = locationStartTV.getText().toString();
                     if (!StringUtils.isBlank(getLocation)) {
                         utility.redirectToGoogleMap(PlacePickerActivity.this, getLocation);
                     } else {
@@ -123,6 +199,7 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
         try {
             PickMediaActivity pickMediaActivity = new PickMediaActivity();
             pickMediaActivity.activityPermissionsResult(PlacePickerActivity.this, requestCode, permissions, grantResults);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -134,7 +211,10 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
             PickMediaActivity pickMediaActivity = new PickMediaActivity();
-            pickMediaActivity.activityResult(PlacePickerActivity.this, getString(R.string.placePickerActivity), locationTV, requestCode, resultCode, data);
+            if (isStartLocation)
+                pickMediaActivity.activityResult(PlacePickerActivity.this, getString(R.string.placePickerActivity), locationStartTV, requestCode, resultCode, data);
+            else
+                pickMediaActivity.activityResult(PlacePickerActivity.this, getString(R.string.placePickerActivity), locationEndTV, requestCode, resultCode, data);
             // passing set_location tv as parameter for location set.
         } catch (Exception ex) {
             ex.printStackTrace();

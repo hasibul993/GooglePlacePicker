@@ -139,7 +139,8 @@ public class Utility {
 
     public double CalculationByDistance(Context context, LatLng StartP, LatLng EndP) {
         int Radius = 6371;// radius of earth in Km
-        double c = 0;
+        double c = 0,result=0;
+
         try {
             double lat1 = StartP.latitude;
             double lat2 = EndP.latitude;
@@ -155,17 +156,24 @@ public class Utility {
             double valueResult = Radius * c;
             double km = valueResult / 1;
             DecimalFormat newFormat = new DecimalFormat("####");
+            DecimalFormat formater = new DecimalFormat("#.##");
             int kmInDec = Integer.valueOf(newFormat.format(km));
             double meter = valueResult % 1000;
             int meterInDec = Integer.valueOf(newFormat.format(meter));
+
+            String formattedText = formater.format(km);
+            result=Double.parseDouble(formattedText);
+
             Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
                     + " Meter   " + meterInDec);
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
 
-        return Radius * c;
+        return result;
     }
 
 

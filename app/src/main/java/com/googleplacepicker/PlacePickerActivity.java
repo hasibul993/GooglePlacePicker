@@ -14,7 +14,9 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.googleplacepicker.GoogleRoute.GoogleRouteActivity;
 import com.googleplacepicker.MediaPermission.PermissionsChecker;
 import com.googleplacepicker.MediaPermission.PickMediaActivity;
 import com.googleplacepicker.Utils.Utility;
@@ -23,7 +25,7 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
 
     Utility utility = new Utility();
 
-    TextView locationStartTV, locationEndTV, calcuteDistanceTV, calcuteDistanceValueTV, showLocationTV;
+    TextView locationStartTV, locationEndTV, calcuteDistanceTV, calcuteDistanceValueTV, showLocationTV,showDirectionTV;
     ImageView profileIcon;
     boolean isStartLocation = false;
 
@@ -36,6 +38,7 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
         locationEndTV = (TextView) findViewById(R.id.LocationEnd);
         calcuteDistanceTV = (TextView) findViewById(R.id.calcuteDistance);
         showLocationTV = (TextView) findViewById(R.id.showLocation);
+        showDirectionTV = (TextView) findViewById(R.id.showDirection);
         calcuteDistanceValueTV = (TextView) findViewById(R.id.calcuteDistanceValue);
         profileIcon = (ImageView) findViewById(R.id.icon);
 
@@ -114,7 +117,7 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
 
                     double value = utility.CalculationByDistance(PlacePickerActivity.this, latLngStart, latLngEnd);
 
-                    calcuteDistanceValueTV.setText(value + "");
+                    calcuteDistanceValueTV.setText(value + " KM");
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -147,6 +150,19 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
                 try {
                     PickMediaActivity pickMediaActivity = new PickMediaActivity();
                     pickMediaActivity.checkPermission(PlacePickerActivity.this, PERMISSIONS_CAMERA, true);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
+
+        showDirectionTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent=new Intent(PlacePickerActivity.this, GoogleRouteActivity.class);
+                    startActivity(intent);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

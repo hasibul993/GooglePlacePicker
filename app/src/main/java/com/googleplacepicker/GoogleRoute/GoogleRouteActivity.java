@@ -64,38 +64,12 @@ public class GoogleRouteActivity extends FragmentActivity implements AppConstant
             mapFragment.getMapAsync(GoogleRouteActivity.this);
 
 
-            getCurrentLocation();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-            PermissionsChecker checker = new PermissionsChecker(GoogleRouteActivity.this);
-           /* if (!checker.lacksPermissions(PERMISSIONS_GPS)) {
-                PickMediaActivity pickMediaActivity = new PickMediaActivity();
-                pickMediaActivity.SetToSharePreference(GoogleRouteActivity.this, getString(R.string.gpsNeverAskAgain), true);
-            }*/
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        try {
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-    }
 
     public void getCurrentLocation() {
         try {
@@ -132,23 +106,8 @@ public class GoogleRouteActivity extends FragmentActivity implements AppConstant
 
 
             this.googleMap = gMap;
-            LatLng sydney = new LatLng(-34, 151);
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            googleMap.setMyLocationEnabled(true);
 
-            Location location = googleMap.getMyLocation();
-            if (location != null) {
-                onLocationChanged(new LatLng(location.getLatitude(), location.getLongitude()));
-            }
+            getCurrentLocation();
 
             this.googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override

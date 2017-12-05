@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.ButtCap;
 import com.google.android.gms.maps.model.LatLng;
 import com.googleplacepicker.GoogleRoute.GoogleRouteActivity;
 import com.googleplacepicker.MediaPermission.PermissionsChecker;
@@ -25,8 +27,9 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
 
     Utility utility = new Utility();
 
-    TextView locationStartTV, locationEndTV, calcuteDistanceTV, calcuteDistanceValueTV, showLocationTV,showDirectionTV;
+    TextView locationStartTV, locationEndTV, calcuteDistanceValueTV, showLocationTV, showDirectionTV;
     ImageView profileIcon;
+    Button calcuteDistanceTV;
     boolean isStartLocation = false;
 
     @Override
@@ -36,7 +39,7 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
 
         locationStartTV = (TextView) findViewById(R.id.locationStartTV);
         locationEndTV = (TextView) findViewById(R.id.LocationEnd);
-        calcuteDistanceTV = (TextView) findViewById(R.id.calcuteDistance);
+        calcuteDistanceTV = (Button) findViewById(R.id.calcuteDistance);
         showLocationTV = (TextView) findViewById(R.id.showLocation);
         showDirectionTV = (TextView) findViewById(R.id.showDirection);
         calcuteDistanceValueTV = (TextView) findViewById(R.id.calcuteDistanceValue);
@@ -149,7 +152,7 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
             public void onClick(View v) {
                 try {
                     PickMediaActivity pickMediaActivity = new PickMediaActivity();
-                    pickMediaActivity.checkPermission(PlacePickerActivity.this, PERMISSIONS_CAMERA, true);
+                    pickMediaActivity.checkPermission(PlacePickerActivity.this, PERMISSIONS_CAMERA, "Camera", getString(R.string.cameraNeverAskAgain));
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -161,8 +164,14 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent=new Intent(PlacePickerActivity.this, GoogleRouteActivity.class);
-                    startActivity(intent);
+
+                    PickMediaActivity pickMediaActivity = new PickMediaActivity();
+                    boolean isPermissionGranted = pickMediaActivity.checkPermission(PlacePickerActivity.this, PERMISSIONS_GPS, "Location", getString(R.string.gpsNeverAskAgain));
+                    if (isPermissionGranted) {
+                        Intent intent = new Intent(PlacePickerActivity.this, GoogleRouteActivity.class);
+                        startActivity(intent);
+                    }
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -242,11 +251,11 @@ public class PlacePickerActivity extends AppCompatActivity implements AppConstan
     public void onResume() {
         super.onResume();
         try {
-            PermissionsChecker checker = new PermissionsChecker(PlacePickerActivity.this);
+            /*PermissionsChecker checker = new PermissionsChecker(PlacePickerActivity.this);
             if (!checker.lacksPermissions(PERMISSIONS_CAMERA)) {
                 PickMediaActivity pickMediaActivity = new PickMediaActivity();
                 pickMediaActivity.SetToSharePreference(PlacePickerActivity.this, getString(R.string.cameraNeverAskAgain), false);
-            }
+            }*/
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -8,6 +8,7 @@
     <string name="chooseFromGallery">Choose from Gallery</string>
     <string name="selectImageToUpload">Select picture to upload</string>
     <string name="cameraNeverAskAgain">CameraNeverAskAgain</string>
+    <string name="gpsNeverAskAgain">GPSNeverAskAgain</string>
     <string name="writeExternalStorageNeverAskAgain">WriteExternalStorageNeverAskAgain</string>
     <string name="remove">Remove</string>
     <string name="cancel">Cancel</string>

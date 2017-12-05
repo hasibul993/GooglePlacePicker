@@ -12,9 +12,14 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.location.LocationListener;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Criteria;
+
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -22,21 +27,26 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.googleplacepicker.AppConstants;
+import com.googleplacepicker.MediaPermission.PermissionsChecker;
+import com.googleplacepicker.MediaPermission.PickMediaActivity;
 import com.googleplacepicker.R;
 
 
-public class GoogleRouteActivity extends FragmentActivity implements OnMapReadyCallback {
+public class GoogleRouteActivity extends FragmentActivity implements AppConstants, LocationListener, OnMapReadyCallback {
 
-    GoogleMap mMap;
+    GoogleMap googleMap;
     ArrayList<LatLng> markerPoints;
+
+    LatLng coordinate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,60 +63,123 @@ public class GoogleRouteActivity extends FragmentActivity implements OnMapReadyC
             //map = fm.getMap();
             mapFragment.getMapAsync(GoogleRouteActivity.this);
 
-            if (mMap != null) {
 
-                // Enable MyLocation Button in the Map
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                mMap.setMyLocationEnabled(true);
+            getCurrentLocation();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-                // Setting onclick event listener for the map
-                mMap.setOnMapClickListener(new OnMapClickListener() {
+    }
 
-                    @Override
-                    public void onMapClick(LatLng point) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            PermissionsChecker checker = new PermissionsChecker(GoogleRouteActivity.this);
+           /* if (!checker.lacksPermissions(PERMISSIONS_GPS)) {
+                PickMediaActivity pickMediaActivity = new PickMediaActivity();
+                pickMediaActivity.SetToSharePreference(GoogleRouteActivity.this, getString(R.string.gpsNeverAskAgain), true);
+            }*/
 
-                        // Already two locations
-                        if (markerPoints.size() > 1) {
-                            markerPoints.clear();
-                            mMap.clear();
-                        }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-                        // Adding new item to the ArrayList
-                        markerPoints.add(point);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
 
-                        // Creating MarkerOptions
-                        MarkerOptions options = new MarkerOptions();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-                        // Setting the position of the marker
-                        options.position(point);
+    }
 
-                        /**
-                         * For the start location, the color of marker is GREEN and
-                         * for the end location, the color of marker is RED.
-                         */
-                        if (markerPoints.size() == 1) {
-                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                        } else if (markerPoints.size() == 2) {
-                            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                        }
+    public void getCurrentLocation() {
+        try {
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String bestProvider = locationManager.getBestProvider(criteria, true);
+            // Location location = locationManager
+            // .getLastKnownLocation(bestProvider);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                onLocationChanged(new LatLng(location.getLatitude(), location.getLongitude()));
+            }
+            // locationManager
+            // .requestLocationUpdates(bestProvider, 20000, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 20000, 0, this);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap gMap) {
+        try {
 
 
-                        // Add new marker to the Google Map Android API V2
-                        mMap.addMarker(options);
+            this.googleMap = gMap;
+            LatLng sydney = new LatLng(-34, 151);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            googleMap.setMyLocationEnabled(true);
 
-                        // Checks, whether start and end locations are captured
-                        if (markerPoints.size() >= 2) {
-                            LatLng origin = markerPoints.get(0);
-                            LatLng dest = markerPoints.get(1);
+            Location location = googleMap.getMyLocation();
+            if (location != null) {
+                onLocationChanged(new LatLng(location.getLatitude(), location.getLongitude()));
+            }
+
+            this.googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+
+                    if (markerPoints.size() > 1) {
+                        markerPoints.clear();
+                        GoogleRouteActivity.this.googleMap.clear();
+                    }
+
+                    // Adding new item to the ArrayList
+                    markerPoints.add(latLng);
+
+                    // Creating MarkerOptions
+                    MarkerOptions options = new MarkerOptions();
+
+                    // Setting the position of the marker
+                    options.position(latLng);
+
+                    if (markerPoints.size() == 1) {
+                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET));
+                    } else if (markerPoints.size() == 2) {
+                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                    }
+
+                    ZoomPosition(latLng, options);
+                    // Checks, whether start and end locations are captured
+                    if (markerPoints.size() >= 2) {
+                        try {
+                            LatLng origin = (LatLng) markerPoints.get(0);
+                            LatLng dest = (LatLng) markerPoints.get(1);
 
                             // Getting URL to the Google Directions API
                             String url = getDirectionsUrl(origin, dest);
@@ -115,72 +188,17 @@ public class GoogleRouteActivity extends FragmentActivity implements OnMapReadyC
 
                             // Start downloading json data from Google Directions API
                             downloadTask.execute(url);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
                         }
 
                     }
-                });
-            }
+
+                }
+            });
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 16));
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-
-                if (markerPoints.size() > 1) {
-                    markerPoints.clear();
-                    mMap.clear();
-                }
-
-                // Adding new item to the ArrayList
-                markerPoints.add(latLng);
-
-                // Creating MarkerOptions
-                MarkerOptions options = new MarkerOptions();
-
-                // Setting the position of the marker
-                options.position(latLng);
-
-                if (markerPoints.size() == 1) {
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                } else if (markerPoints.size() == 2) {
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }
-
-                // Add new marker to the Google Map Android API V2
-                mMap.addMarker(options);
-
-                // Checks, whether start and end locations are captured
-                if (markerPoints.size() >= 2) {
-                    try {
-                        LatLng origin = (LatLng) markerPoints.get(0);
-                        LatLng dest = (LatLng) markerPoints.get(1);
-
-                        // Getting URL to the Google Directions API
-                        String url = getDirectionsUrl(origin, dest);
-
-                        DownloadTask downloadTask = new DownloadTask();
-
-                        // Start downloading json data from Google Directions API
-                        downloadTask.execute(url);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-
-                }
-
-            }
-        });
 
     }
 
@@ -254,6 +272,62 @@ public class GoogleRouteActivity extends FragmentActivity implements OnMapReadyC
             urlConnection.disconnect();
         }
         return data;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+
+    public void onLocationChanged(LatLng latLng) {
+        String detailAddressShowing = null;
+        double latitude = latLng.latitude;
+        double longitude = latLng.longitude;
+        coordinate = new LatLng(latitude, longitude);
+
+        markerPoints.add(latLng);
+        //markerPoints.position(coordinate);
+        //markerPoints.title(detailAddressShowing);
+        MarkerOptions options = new MarkerOptions();
+
+        // Setting the position of the marker
+        options.position(latLng);
+
+        if (markerPoints.size() == 1) {
+            options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        }
+
+        ZoomPosition(coordinate, options);
+
+    }
+
+    private void ZoomPosition(LatLng latLng, MarkerOptions markerOptions) {
+        try {
+            // googleMap.addMarker(new MarkerOptions().position(coordinate));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(5));
+
+            googleMap.addMarker(markerOptions);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
 
@@ -346,13 +420,13 @@ public class GoogleRouteActivity extends FragmentActivity implements OnMapReadyC
 
                     // Adding all the points in the route to LineOptions
                     lineOptions.addAll(points);
-                    lineOptions.width(2);
-                    lineOptions.color(Color.RED);
+                    lineOptions.width(15);
+                    lineOptions.color(Color.CYAN);
 
                 }
 
                 // Drawing polyline in the Google Map for the i-th route
-                mMap.addPolyline(lineOptions);
+                googleMap.addPolyline(lineOptions);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

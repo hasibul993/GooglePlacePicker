@@ -354,7 +354,7 @@ public class PickMediaActivity extends AppCompatActivity {
                 if (requestCode == SELECT_FILE_GALLERY) {
                     try {
                         selectedImageUri = data.getData();
-                        imagePath=getRealPathFromURI(context,selectedImageUri);
+                        imagePath = getRealPathFromURI(context, selectedImageUri);
                         //decodeFile(context, screenName, imagePath);
                         performCrop(context, screenName, selectedImageUri);
                     } catch (Exception ex) {
@@ -626,11 +626,11 @@ public class PickMediaActivity extends AppCompatActivity {
     }
 
 
-    public void checkPermission(Context context, String[] permissions, boolean isGallery) {
-        boolean permissionType = false;
+    public boolean checkPermission(Context context, String[] permissions, String permString, String permKey) {
+        boolean isPermissionGranted = false;
         try {
             PermissionsChecker checker = new PermissionsChecker(context);
-            if (isGallery && IsNeverAskAgainPermission(context, context.getString(R.string.cameraNeverAskAgain))) {
+            if (IsNeverAskAgainPermission(context, permKey)) {
                 try {
                     Activity activity = (Activity) context;
                     Intent intent = new Intent();
@@ -645,7 +645,9 @@ public class PickMediaActivity extends AppCompatActivity {
                 if (checker.lacksPermissions(permissions)) {
                     requestPermissions(context, permissions);
                 } else {
-                    ShowDialogOptionForMidiaPick(context);
+                    isPermissionGranted=true;
+                    /*if (StringUtils.equalsIgnoreCase(permString, "Camera"))
+                        ShowDialogOptionForMidiaPick(context);*/
                     //allPermissionsGranted();
                 }
             }
@@ -653,6 +655,8 @@ public class PickMediaActivity extends AppCompatActivity {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        return isPermissionGranted;
 
     }
 
@@ -748,6 +752,26 @@ public class PickMediaActivity extends AppCompatActivity {
                         SetToSharePreference(activity, activity.getString(R.string.cameraNeverAskAgain), true);
                     }
                     break;
+                case Manifest.permission.ACCESS_COARSE_LOCATION:
+                    showRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+                    if (!showRationale) {
+                        // user also CHECKED "never ask again"
+                        // you can either enable some fall back,
+                        // again the permission and directing to
+                        // the app setting
+                        SetToSharePreference(activity, activity.getString(R.string.cameraNeverAskAgain), true);
+                    }
+                    break;
+                case Manifest.permission.ACCESS_FINE_LOCATION:
+                    showRationale = ActivityCompat.shouldShowRequestPermissionRationale(activity, permission);
+                    if (!showRationale) {
+                        // user also CHECKED "never ask again"
+                        // you can either enable some fall back,
+                        // again the permission and directing to
+                        // the app setting
+                        SetToSharePreference(activity, activity.getString(R.string.cameraNeverAskAgain), true);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -766,6 +790,18 @@ public class PickMediaActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
     }
+
+
+    public void SetGPSToSharePreference(Activity activity, String key, boolean isBoolean) {
+        try {
+            SharedPreferences.Editor editor = activity.getSharedPreferences(MyPREFERENCES, MODE_PRIVATE).edit();
+            editor.putBoolean(key, isBoolean);
+            editor.commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     private boolean IsNeverAskAgainPermission(Context context, String key) {
         boolean isTrue = false;

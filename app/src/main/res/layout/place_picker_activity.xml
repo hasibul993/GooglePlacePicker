@@ -5,90 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/profile_icon_grey" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/locationStartTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/icon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="Pick start location"
-            android:textColor="@color/main_color_grey_800"
-            android:textSize="@dimen/header" />
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/profile_icon_grey" />
 
-        <TextView
-            android:id="@+id/LocationEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/locationStartTV"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="Pick end location"
-            android:textColor="@color/main_color_grey_800"
-            android:textSize="@dimen/header" />
+            <TextView
+                android:id="@+id/locationStartTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Pick start location"
+                android:textColor="@color/main_color_grey_800"
+                android:textSize="@dimen/header" />
 
-        <TextView
-            android:id="@+id/calcuteDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/LocationEnd"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:text="Calcute Distance"
-            android:textColor="@color/main_color_grey_800"
-            android:textSize="@dimen/header" />
+            <TextView
+                android:id="@+id/LocationEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/locationStartTV"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Pick end location"
+                android:textColor="@color/main_color_grey_800"
+                android:textSize="@dimen/header" />
 
-        <TextView
-            android:id="@+id/calcuteDistanceValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/LocationEnd"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="30dp"
-            android:layout_toRightOf="@+id/calcuteDistance"
-            android:text=""
-            android:textColor="@color/Green"
-            android:textSize="@dimen/header" />
+            <Button
+                android:id="@+id/calcuteDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LocationEnd"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/Teal"
+                android:padding="10dp"
+                android:text="Calcute Distance"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text" />
+
+            <TextView
+                android:id="@+id/calcuteDistanceValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/LocationEnd"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@+id/calcuteDistance"
+                android:text=""
+                android:textColor="@color/Green"
+                android:textSize="@dimen/header" />
 
 
-        <TextView
-            android:id="@+id/showLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/calcuteDistance"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:text="Show location in map"
-            android:textColor="@color/main_color_grey_800"
-            android:textSize="@dimen/header" />
+            <TextView
+                android:id="@+id/showLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/calcuteDistance"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="Show location in map"
+                android:textColor="@color/main_color_grey_800"
+                android:textSize="@dimen/header" />
 
-        <TextView
-            android:id="@+id/showDirection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/showLocation"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:text="Show direction"
-            android:textColor="@color/main_color_grey_800"
-            android:textSize="@dimen/header" />
+            <TextView
+                android:id="@+id/showDirection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/showLocation"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="Show direction"
+                android:textColor="@color/main_color_grey_800"
+                android:textSize="@dimen/header" />
 
-    </RelativeLayout>
+        </RelativeLayout>
 
+    </ScrollView>
 
 </RelativeLayout>
